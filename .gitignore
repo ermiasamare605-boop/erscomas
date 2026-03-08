@@ -1,0 +1,91 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+
+# Virtual environments
+venv/
+env/
+env.bak/
+*.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+*.log.*
+
+# Data files
+*.db
+*.sqlite3
+*.jsonl
+*.csv
+*.xlsx
+
+# Configuration
+.env
+.env.local
+.env.*.local
+
+# Build files
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Test files
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Output directories
+results*/
+output*/
+*.out
+
+# Screenshots
+screenshots/
+
+# Payload files
+payloads/*.pyc
+payloads/*.pyd
+payloads/__pycache__/
+
+# Modules
+modules/*.pyc
+modules/*.pyd
+modules/__pycache__/
+modules/modules/*.pyc
+
+# Tracks
+tracks/*.pyc
+tracks/__pycache__/
+
+# Templates
+templates/*.pyc
+templates/__pycache__/
+
+# Phish templates
+phish_templates/*.html
+phish_templates/*.pyc
+
+# Other
+*.old
+*.bak
+*.backup

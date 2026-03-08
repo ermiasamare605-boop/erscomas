@@ -1,0 +1,6 @@
+# Targets file for auto_pentest.py
+# Format: target,platform (platform should be one of: instagram, twitter, facebook)
+
+testuser1,instagram
+testuser2,twitter
+testuser3,facebook

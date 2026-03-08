@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social C2 Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f7fafc;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #718096;
+            font-size: 1.1em;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .session-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .session-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .session-item:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transform: translateX(5px);
+        }
+
+        .session-info {
+            flex: 1;
+        }
+
+        .session-target {
+            font-weight: bold;
+            color: #2d3748;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .session-platform {
+            color: #718096;
+            font-size: 0.9em;
+        }
+
+        .session-status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-pending {
+            background: #feebc8;
+            color: #7c2d12;
+        }
+
+        .status-completed {
+            background: #bfdbfe;
+            color: #1e40af;
+        }
+
+        .status-failed {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-danger {
+            background: #f56565;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #e53e3e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 101, 101, 0.3);
+        }
+
+        .btn-success {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+
+        .payload-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .payload-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .payload-name {
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .payload-type {
+            color: #718096;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .payload-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .log-container {
+            background: #2d3748;
+            color: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 5px;
+            border-left: 3px solid #667eea;
+            padding-left: 10px;
+        }
+
+        .log-time {
+            color: #a0aec0;
+            margin-right: 10px;
+        }
+
+        .log-level-info {
+            color: #4299e1;
+        }
+
+        .log-level-success {
+            color: #48bb78;
+        }
+
+        .log-level-warning {
+            color: #ed8936;
+        }
+
+        .log-level-error {
+            color: #f56565;
+        }
+
+        .controls-section {
+            background: #edf2f7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2d3748;
+            font-weight: bold;
+        }
+
+        .control-group input,
+        .control-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .control-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 0;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .session-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .controls {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                flex: 1;
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Social C2 Dashboard</h1>
+            <p>Command and Control Center for Social Media Penetration Testing</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="total-sessions">0</div>
+                <div class="stat-label">Total Sessions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="active-sessions">0</div>
+                <div class="stat-label">Active Sessions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="total-payloads">0</div>
+                <div class="stat-label">Payloads Deployed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="success-rate">0%</div>
+                <div class="stat-label">Success Rate</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2>Active Sessions</h2>
+                <div class="session-list" id="session-list">
+                    <div style="text-align: center; color: #718096; padding: 40px;">
+                        <div class="loading"></div>
+                        <p style="margin-top: 10px;">Loading sessions...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Payloads</h2>
+                <div class="payload-grid" id="payload-grid">
+                    <div style="text-align: center; color: #718096; padding: 40px;">
+                        <div class="loading"></div>
+                        <p style="margin-top: 10px;">Loading payloads...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Recent Activity</h2>
+                <div class="log-container" id="log-container">
+                    <div class="log-entry">
+                        <span class="log-time">[--:--:--]</span>
+                        <span class="log-level-info">INFO</span> Dashboard initialized
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <h2>Quick Actions</h2>
+                <div class="control-group">
+                    <label for="target-input">Target Username:</label>
+                    <input type="text" id="target-input" placeholder="Enter target username">
+                </div>
+                <div class="control-group">
+                    <label for="platform-select">Platform:</label>
+                    <select id="platform-select">
+                        <option value="instagram">Instagram</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="twitter">Twitter</option>
+                        <option value="linkedin">LinkedIn</option>
+                    </select>
+                </div>
+                <div class="control-actions">
+                    <button class="btn btn-primary" id="start-recon-btn">Start Recon</button>
+                    <button class="btn btn-success" id="harvest-creds-btn">Harvest Credentials</button>
+                    <button class="btn btn-danger" id="exploit-btn">Exploit Target</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const C2_SERVER = 'http://localhost:5000';
+        const REFRESH_INTERVAL = 5000; // 5 seconds
+
+        // DOM elements
+        const sessionList = document.getElementById('session-list');
+        const payloadGrid = document.getElementById('payload-grid');
+        const logContainer = document.getElementById('log-container');
+        const totalSessionsEl = document.getElementById('total-sessions');
+        const activeSessionsEl = document.getElementById('active-sessions');
+        const totalPayloadsEl = document.getElementById('total-payloads');
+        const successRateEl = document.getElementById('success-rate');
+        const startReconBtn = document.getElementById('start-recon-btn');
+        const harvestCredsBtn = document.getElementById('harvest-creds-btn');
+        const exploitBtn = document.getElementById('exploit-btn');
+        const targetInput = document.getElementById('target-input');
+        const platformSelect = document.getElementById('platform-select');
+
+        // Add log entry
+        function addLog(level, message) {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString();
+            const levelClass = `log-level-${level}`;
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.innerHTML = `
+                <span class="log-time">[${timeStr}]</span>
+                <span class="${levelClass}">${level.toUpperCase()}</span> ${message}
+            `;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        // Fetch sessions
+        async function fetchSessions() {
+            try {
+                const response = await fetch(`${C2_SERVER}/sessions`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const sessions = await response.json();
+                
+                sessionList.innerHTML = '';
+                if (sessions.length === 0) {
+                    sessionList.innerHTML = `
+                        <div style="text-align: center; color: #718096; padding: 40px;">
+                            <p>No active sessions</p>
+                        </div>
+                    `;
+                } else {
+                    sessions.forEach(session => {
+                        const sessionItem = document.createElement('div');
+                        sessionItem.className = 'session-item';
+                        sessionItem.innerHTML = `
+                            <div class="session-info">
+                                <div class="session-target">${session.target}</div>
+                                <div class="session-platform">${session.platform}</div>
+                            </div>
+                            <div class="session-status status-${session.status}">${session.status}</div>
+                            <div class="controls">
+                                <button class="btn btn-primary" onclick="viewSession(${session.id})">View</button>
+                                <button class="btn btn-danger" onclick="endSession(${session.id})">End</button>
+                            </div>
+                        `;
+                        sessionList.appendChild(sessionItem);
+                    });
+                }
+
+                // Update stats
+                totalSessionsEl.textContent = sessions.length;
+                activeSessionsEl.textContent = sessions.filter(s => s.status === 'active').length;
+                addLog('info', `Fetched ${sessions.length} sessions`);
+            } catch (error) {
+                addLog('error', `Failed to fetch sessions: ${error.message}`);
+            }
+        }
+
+        // Fetch payloads
+        async function fetchPayloads() {
+            try {
+                const response = await fetch(`${C2_SERVER}/payloads`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const payloads = await response.json();
+                
+                payloadGrid.innerHTML = '';
+                if (payloads.length === 0) {
+                    payloadGrid.innerHTML = `
+                        <div style="text-align: center; color: #718096; padding: 40px;">
+                            <p>No payloads deployed</p>
+                        </div>
+                    `;
+                } else {
+                    payloads.forEach(payload => {
+                        const payloadCard = document.createElement('div');
+                        payloadCard.className = 'payload-card';
+                        payloadCard.innerHTML = `
+                            <div class="payload-name">${payload.target}</div>
+                            <div class="payload-type">${payload.payload_type}</div>
+                            <div class="payload-actions">
+                                <button class="btn btn-primary" onclick="viewPayload(${payload.id})">View</button>
+                                <button class="btn btn-success" onclick="deployPayload(${payload.id})">Deploy</button>
+                            </div>
+                        `;
+                        payloadGrid.appendChild(payloadCard);
+                    });
+                }
+
+                totalPayloadsEl.textContent = payloads.length;
+                const successful = payloads.filter(p => p.status === 'completed' && p.result && p.result.includes('success')).length;
+                const successRate = payloads.length > 0 ? Math.round((successful / payloads.length) * 100) : 0;
+                successRateEl.textContent = `${successRate}%`;
+                addLog('info', `Fetched ${payloads.length} payloads`);
+            } catch (error) {
+                addLog('error', `Failed to fetch payloads: ${error.message}`);
+            }
+        }
+
+        // Create new session
+        async function createSession(target, platform) {
+            try {
+                const response = await fetch(`${C2_SERVER}/sessions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        target: target,
+                        platform: platform
+                    })
+                });
+
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const session = await response.json();
+                addLog('success', `Session created: ${session.target} (${session.platform})`);
+                fetchSessions();
+                return session;
+            } catch (error) {
+                addLog('error', `Failed to create session: ${error.message}`);
+            }
+        }
+
+        // Start recon
+        async function startRecon(target, platform) {
+            const session = await createSession(target, platform);
+            if (session) {
+                await deployPayload(session.id, 'recon');
+            }
+        }
+
+        // Deploy payload
+        async function deployPayload(sessionId, payloadType = 'credential_harvest') {
+            try {
+                const response = await fetch(`${C2_SERVER}/payloads`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        session_id: sessionId,
+                        payload_type: payloadType,
+                        target: targetInput.value
+                    })
+                });
+
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const payload = await response.json();
+                addLog('success', `Payload deployed: ${payload.payload_type}`);
+                fetchPayloads();
+            } catch (error) {
+                addLog('error', `Failed to deploy payload: ${error.message}`);
+            }
+        }
+
+        // View session
+        function viewSession(sessionId) {
+            addLog('info', `Viewing session ${sessionId}`);
+        }
+
+        // End session
+        async function endSession(sessionId) {
+            try {
+                const response = await fetch(`${C2_SERVER}/sessions/${sessionId}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                addLog('success', `Session ended: ${sessionId}`);
+                fetchSessions();
+            } catch (error) {
+                addLog('error', `Failed to end session: ${error.message}`);
+            }
+        }
+
+        // View payload
+        function viewPayload(payloadId) {
+            addLog('info', `Viewing payload ${payloadId}`);
+        }
+
+        // Event listeners
+        startReconBtn.addEventListener('click', () => {
+            const target = targetInput.value.trim();
+            const platform = platformSelect.value;
+            if (!target) {
+                addLog('warning', 'Please enter a target username');
+                return;
+            }
+            startRecon(target, platform);
+        });
+
+        harvestCredsBtn.addEventListener('click', () => {
+            const target = targetInput.value.trim();
+            const platform = platformSelect.value;
+            if (!target) {
+                addLog('warning', 'Please enter a target username');
+                return;
+            }
+            createSession(target, platform).then(session => {
+                if (session) {
+                    deployPayload(session.id, 'credential_harvest');
+                }
+            });
+        });
+
+        exploitBtn.addEventListener('click', () => {
+            const target = targetInput.value.trim();
+            const platform = platformSelect.value;
+            if (!target) {
+                addLog('warning', 'Please enter a target username');
+                return;
+            }
+            createSession(target, platform).then(session => {
+                if (session) {
+                    deployPayload(session.id, 'exploit');
+                }
+            });
+        });
+
+        // Auto-refresh data
+        setInterval(() => {
+            fetchSessions();
+            fetchPayloads();
+        }, REFRESH_INTERVAL);
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchSessions();
+            fetchPayloads();
+            addLog('info', 'Dashboard ready');
+        });
+    </script>
+</body>
+</html>
