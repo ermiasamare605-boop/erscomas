@@ -1,5 +1,4 @@
-# Social Media Penetration Testing Tool
-
+# erscomas
 A comprehensive ethical hacking framework for social media platforms, designed for penetration testing and security assessment purposes.
 
 ## Features
@@ -109,10 +108,16 @@ The tool uses `modules/modules/config.json` for configuration. Key settings:
 ## Project Structure
 
 ```
-social_media_pentest/
+erscomas/
+├── dashboard.py              # Flask web dashboard
 ├── social_hacker.py          # Main application entry point
+├── c2_server.py              # Command and Control server
 ├── requirements.txt          # Python dependencies
 ├── README.md                 # Project documentation
+├── templates/                # HTML templates for dashboard
+│   ├── dashboard.html        # Main dashboard page
+│   └── advanced_dashboard.html
+├── static/                   # Static files (CSS, JS, images)
 └── modules/                  # Core functionality modules
     ├── recon.py              # Reconnaissance module
     ├── cred_harvest.py       # Credential harvesting module
